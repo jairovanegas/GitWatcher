@@ -6,16 +6,15 @@ Since this solution is designed to work in realtime with [GitHub WebHooks](https
 
 In order to test the realtime part of this solution, you must send an email to [jhvangar@gmail.com](mailto:jhvangar@gmail.com) requesting writting rights to this repository, as soon as those rights are granted you can start the test.
 
-For the next part git is necessary, so if you haven't installed it yet follows this instrucctions [how to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+For the next part git is necessary, so if you haven't installed it yet follows this instructions [how to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 ## Test
 
-First you need to clone the repository, to do that open a terminal in your system and run the next script.
+First you need to clone the repository, to do that open a terminal in a folder you like and run the next script.
 
 ```bash
-mkdir jairo_vanegas_test
-cd ./jairo_vanegas_test
 git clone https://github.com/jairovanegas/git-watcher.git
+cd ./git-watcher
 ```
 
 If completed successfully, in order to make changes to the repository so you can make a commit to test the realtime part of the solution, you have to change the file **test.txt** in the root of the folder you made in the previous script.
