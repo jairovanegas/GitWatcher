@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Pusher from 'pusher';
 
+/**
+ * Instantiate the Pusher Client
+ */
 export const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID!,
   key: process.env.PUSHER_KEY!,
@@ -28,13 +31,22 @@ type GithubWebhookCallbackData = {
   commits: WebhookCallbackCommit[]
 }
 
+/**
+ * Callback for the Github Webhook for pushes to the main branch
+ * @param {GithubWebhookCallbackData} req Request from the Github Webhook
+ * @param res Response
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const data: GithubWebhookCallbackData = req.body;
-  const response = await pusher.trigger("git-watcher", "push-event", {
-    commits: data.commits
-  });
-  res.json({ message: "completed" });
+  try {
+    await pusher.trigger("git-watcher", "push-event", {
+      commits: data.commits
+    });
+    res.json({ message: "completed" });
+  } catch (e) {
+    res.status(500).send('Internal Server Error.');
+  }
 }

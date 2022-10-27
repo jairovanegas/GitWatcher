@@ -7,16 +7,19 @@ export default function GitCommitView({ commit }: { commit: GithubCommit }) {
 
     const [userInfo, setUserInfo] = useState(commit.author);
 
+    /**
+     * If the commit doesn't have the required data for presentation
+     * fetch the data from github, for example when a commit arrives
+     * from the Pusher channel.
+     */
     useEffect(() => {
         if (commit.author.avatar_url === "") {
-            console.log("No Avatar");
             const octokit = new Octokit({
                 auth: process.env["ACCESS_TOKEN"]
             });
             octokit.request('GET /users/{username}', {
                 username: userInfo.login
             }).then((value) => {
-                console.log(value);
                 const user: GithubUser = value.data;
                 setUserInfo((previousUser) => {
                     return user;

@@ -4,7 +4,6 @@ import styles from '../styles/Home.module.css'
 import { Octokit } from "octokit";
 import GitCommitListView from "../components/GitCommitListView";
 import Pusher from "pusher-js";
-import axios from "axios";
 import { useEffect, useState } from 'react';
 import { WebhookCallbackCommit } from './api/push';
 
@@ -24,17 +23,27 @@ export type GithubCommit = {
     html_url: string
 }
 
+/**
+ * The commits history is fetched from the Github api
+ * @returns {{data: GithubCommit[]}} Commit Array from the api
+ */
 export async function getServerSideProps() {
-    const octokit = new Octokit({
-        auth: process.env["ACCESS_TOKEN"]
-    });
-    const commitsFromGithub = await octokit.request('GET /repos/{owner}/{repo}/commits', {
-        owner: 'jairovanegas',
-        repo: 'git-watcher'
-    });
-    return {
-        props: {
-            data: commitsFromGithub.data
+    try {
+        const octokit = new Octokit({
+            auth: process.env["ACCESS_TOKEN"]
+        });
+        const commitsFromGithub = await octokit.request('GET /repos/{owner}/{repo}/commits', {
+            owner: 'jairovanegas',
+            repo: 'git-watcher'
+        });
+        return {
+            props: {
+                data: commitsFromGithub.data
+            }
+        }
+    } catch (e) {
+        return {
+            props: {}
         }
     }
 }
@@ -43,38 +52,54 @@ export default function Home({ data }: { data: GithubCommit[] }) {
 
     const [commitHistory, setCommitHistory] = useState(data);
 
+    /**
+     * The Pusher Channel is connected and awaiting for events.
+     * When an event arrives appends it to the start of the commits array
+     */
     useEffect(() => {
-        console.log("Registering listener to channel");
-        const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
-            cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-        });
-        const channel = pusher.subscribe("git-watcher");
-
-        channel.bind("push-event", ({ commits }: { commits: WebhookCallbackCommit[] }) => {
-            setCommitHistory(previousCommitHistory => [...commits.map((commit) => {
-                return {
-                    sha: commit.id,
-                    commit: {
-                        message: commit.message
-                    },
-                    author: {
-                        login: commit.author.username,
-                        avatar_url: "",
-                        html_url: ""
-                    },
-                    committer: {
-                        login: commit.committer.username,
-                        avatar_url: "",
-                        html_url: ""
-                    },
-                    html_url: commit.url
-                }
-            }), ...previousCommitHistory])
-        });
-
-        return () => {
-            pusher.unsubscribe("push-event");
-        };
+        try {
+            const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+                cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+            });
+            const channel = pusher.subscribe("git-watcher");
+            try {
+                /**
+                 * When an event arrives, transforms the commits in the incoming array to
+                 * matching types and appends the result in front of the previous array
+                 */
+                channel.bind("push-event", ({ commits }: { commits: WebhookCallbackCommit[] }) => {
+                    setCommitHistory(previousCommitHistory => [...commits.map((commit) => {
+                        return {
+                            sha: commit.id,
+                            commit: {
+                                message: commit.message
+                            },
+                            author: {
+                                login: commit.author.username,
+                                avatar_url: "",
+                                html_url: ""
+                            },
+                            committer: {
+                                login: commit.committer.username,
+                                avatar_url: "",
+                                html_url: ""
+                            },
+                            html_url: commit.url
+                        }
+                    }), ...previousCommitHistory])
+                });
+    
+                return () => {
+                    pusher.unsubscribe("push-event");
+                };
+            } catch (e) {
+                return () => {
+                    pusher.unsubscribe("push-event");
+                };
+            }
+        } catch (e) {
+            console.log("Error creating pusher channel");
+        }
     }, []);
 
     return (
