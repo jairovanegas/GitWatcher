@@ -77,7 +77,7 @@ export default  function Home() {
 
     useEffect(()=>{
         const octokit = new Octokit({
-            auth: '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'
+            auth: process.env["ACCESS_TOKEN"]
         });
         const fetchAsyncCommitsFromGithub = async () => {
             const commitsFromGithub = await octokit.request('GET /repos/{owner}/{repo}/commits', {
