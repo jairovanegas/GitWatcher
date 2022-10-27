@@ -55,7 +55,7 @@ export default function Home({ data }: { data: GithubCommit[] }) {
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
-        const channel = pusher.subscribe("chat");
+        const channel = pusher.subscribe("push-event");
 
         channel.bind("push-event", ({ commits }: { commits: WebhookCallbackCommit[] }) => {
             setCommitHistory(previousCommitHistory => [...commits.map((commit) => {
