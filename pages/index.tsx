@@ -8,27 +8,19 @@ import axios from "axios";
 import { useEffect, useState } from 'react';
 import { WebhookCallbackCommit } from './api/push';
 
-export interface GithubCommit {
+export type GithubUser = {
+    login: string,
+    avatar_url: string,
+    html_url: string
+};
+
+export type GithubCommit = {
     sha: string,
     commit: {
         message: string
     },
-    author: {
-        login: string,
-        id: number,
-        avatar_url: string,
-        html_url: string,
-        type: string,
-        site_admin: boolean
-    },
-    committer: {
-        login: string,
-        id: number,
-        avatar_url: string,
-        html_url: string,
-        type: string,
-        site_admin: boolean
-    },
+    author: GithubUser,
+    committer: GithubUser,
     html_url: string
 }
 
@@ -65,8 +57,16 @@ export default function Home({ data }: { data: GithubCommit[] }) {
                     commit: {
                         message: commit.message
                     },
-                    author: commit.author,
-                    committer: commit.committer,
+                    author: {
+                        login: commit.author.username,
+                        avatar_url: "",
+                        html_url: ""
+                    },
+                    committer: {
+                        login: commit.committer.username,
+                        avatar_url: "",
+                        html_url: ""
+                    },
                     html_url: commit.url
                 }
             }), ...previousCommitHistory])

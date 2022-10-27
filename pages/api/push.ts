@@ -9,27 +9,19 @@ export const pusher = new Pusher({
   useTLS: true,
 });
 
+export type WebhookCallbackUser = {
+  email: string,
+  name: string,
+  username: string
+}
+
 export type WebhookCallbackCommit = {
   id: string,
   message: string,
   timestamp: string,
   url: string,
-  author: {
-    login: string,
-    id: number,
-    avatar_url: string,
-    html_url: string,
-    type: string,
-    site_admin: boolean
-  },
-  committer: {
-    login: string,
-    id: number,
-    avatar_url: string,
-    html_url: string,
-    type: string,
-    site_admin: boolean
-  }
+  author: WebhookCallbackUser,
+  committer: WebhookCallbackUser
 }
 
 type GithubWebhookCallbackData = {
