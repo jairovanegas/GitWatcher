@@ -34,7 +34,8 @@ export interface GithubCommit {
         "html_url": string,
         "type": string,
         "site_admin": boolean
-    }
+    },
+    "html_url": string
 }
 
 export async function getServerSideProps() {

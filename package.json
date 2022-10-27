@@ -11,6 +11,7 @@
   "dependencies": {
     "next": "13.0.0",
     "octokit": "^2.0.10",
+    "pusher": "^5.1.1-beta",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
