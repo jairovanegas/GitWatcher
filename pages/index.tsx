@@ -55,7 +55,7 @@ export default function Home({ data }: { data: GithubCommit[] }) {
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
-        const channel = pusher.subscribe("push-event");
+        const channel = pusher.subscribe("git-watcher");
 
         channel.bind("push-event", ({ commits }: { commits: WebhookCallbackCommit[] }) => {
             console.log(commits);
