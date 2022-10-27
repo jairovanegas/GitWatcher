@@ -8,13 +8,15 @@ export default function GitCommitView({ commit }: { commit: GithubCommit }) {
     const [userInfo, setUserInfo] = useState(commit.author);
     
     useEffect(() => {
-        if (userInfo.avatar_url === "") {
+        if (commit.author.avatar_url === "") {
+            console.log("No Avatar");
             const octokit = new Octokit({
                 auth: process.env["ACCESS_TOKEN"]
             });
             octokit.request('GET /users/{username}', {
                 username: userInfo.login
             }).then((value) => {
+                console.log(value);
                 const user: GithubUser = value.data;
                 setUserInfo((previousUser) => {
                     return user;

@@ -59,7 +59,6 @@ export default function Home({ data }: { data: GithubCommit[] }) {
         const channel = pusher.subscribe("git-watcher");
 
         channel.bind("push-event", ({ commits }: { commits: WebhookCallbackCommit[] }) => {
-            console.log(commits);
             setCommitHistory(previousCommitHistory => [...commits.map((commit) => {
                 return {
                     sha: commit.id,
