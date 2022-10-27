@@ -57,7 +57,7 @@ export default function Home({ data }: { data: GithubCommit[] }) {
         });
         const channel = pusher.subscribe("chat");
 
-        channel.bind("push-event", (commits: WebhookCallbackCommit[]) => {
+        channel.bind("push-event", ({ commits }: { commits: WebhookCallbackCommit[] }) => {
             setCommitHistory(previousCommitHistory => [...commits.map((commit) => {
                 return {
                     sha: commit.id,

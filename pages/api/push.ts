@@ -41,6 +41,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const data: GithubWebhookCallbackData = req.body;
-  const response = await pusher.trigger("git-watcher", "push-event", data.commits);
+  const response = await pusher.trigger("git-watcher", "push-event", {
+    commits: data.commits
+  });
   res.json({ message: "completed" });
 }
