@@ -17,7 +17,7 @@ git clone https://github.com/jairovanegas/git-watcher.git
 cd ./git-watcher
 ```
 
-If completed successfully, in order to make changes to the repository so you can make a commit to test the realtime part of the solution, you have to change the file **test.txt** in the root of the folder you made in the previous script.
+If completed successfully, to test the realtime part of the solution, you have to change the file **test.txt** in the root of the folder you made in the previous script.
 
 With the changes made to the file go back to the terminal and execute the next script.
 
@@ -29,7 +29,7 @@ Remember to change the string in quotes to the message you want to see in the co
 
 In this part you have everything set to proceed with the test, so please open the web browser and open the solution in the next link [GitWatcher](https://git-watcher-3uar.vercel.app/). All the previous commits are listed, but yours insn't listed yet. To do that go back to the terminal without closing the web browser and execute the next script.
 
->⚠️ To push to the repository you have to login in your account with your GitHub username and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to enter as a password when the terminal demands it.
+>⚠️ To push to the repository you may have to login in your account with your GitHub username and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to enter as a password when the terminal demands it. I have experienced some bugs with this terminal login, so if you have the same issues better use a git client like [GitKraken](https://www.gitkraken.com/).
 
 ```bash
 git push
