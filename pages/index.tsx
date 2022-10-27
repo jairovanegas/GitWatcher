@@ -52,6 +52,7 @@ export default function Home({ data }: { data: GithubCommit[] }) {
     const [commitHistory, setCommitHistory] = useState(data);
 
     useEffect(() => {
+        console.log("Registering listener to channel");
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
