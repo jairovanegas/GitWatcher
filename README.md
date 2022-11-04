@@ -1,5 +1,3 @@
-This is a technical test to apply for a fullstack developer job at [FulltimeForce](https://fulltimeforce.com/).
-
 ## Preconditions
 
 Since this solution is designed to work in realtime with [GitHub WebHooks](https://docs.github.com/en/developers/webhooks-and-events/webhooks/about-webhooks), and this technology requires a static URL to call when a push is made to the repository, this solution has been deployed to [Vercel](https://vercel.com/) in order to get an static URL and be served easily to the assesment team.
